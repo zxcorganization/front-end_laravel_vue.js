@@ -16,7 +16,7 @@
 </template>
 <script>
     import axios from 'axios'
-
+    import heroaxios from './components/heroaxios.vue'
     export default {
         data() {
             return {
@@ -29,19 +29,7 @@
 
 
         methods: {
-            addHero() {
-                axios.post('http://dummy.restapiexample.com/api/v1/create', {
-                    name: this.newHero 
-                }, {
-                        headers: {
-                        'Content-Type': null
-                    }})
-                    .then((response) => {
-                        const data = response.data.data;
-                        this.list.push(data);
-                        this.newUser = '';
-                })
-            },
+              add: heroaxios.addHero,
             getHeroes() {
                 axios.get('http://dummy.restapiexample.com/api/v1/employees' ).then((response) => {
                     this.list = response.data.data;

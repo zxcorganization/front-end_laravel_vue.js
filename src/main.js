@@ -8,6 +8,7 @@ import dashboard from './pages/dashboard.vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import herodata from './pages/herodata.vue'
+import heroaxios from './components/heroaxios.vue'
 console.log(axios.defaults.headers);
 //delete axios.defaults.headers.common["Accept"];
 delete axios.defaults.headers.post['Content-Type'];
@@ -23,6 +24,6 @@ Vue.use(VueAxios, axios)
 
 new Vue({
     render: h => h(App),
-    router, dashboard,heroes, herodata
+    router, dashboard, heroes, herodata, heroaxios
 }).$mount('#app')
 
