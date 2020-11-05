@@ -1,28 +1,43 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+   
+    <div id="app">
+        <h2>Tour of Heroes</h2>
+        <router-link tag="b-button" active-class="active" to="/" exact>Dashboard</router-link>
+        <router-link tag="b-button" active-class="active" to="/about" exact>Heroes</router-link>
+        <router-view />
+       
+
+        
+    </div>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import 'bootstrap/dist/css/bootstrap.css'
+    import 'bootstrap-vue/dist/bootstrap-vue.css'
+    export default {
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+        data() {
+            return {
+                
+            }
+        },
+        components: {
+            
+        },
+        computed: {
+            
+        }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+    body{
+        background-color:#ffffff;
+    }
+    button{
+        margin-left: 2px;
+        background-color:#4cff00;
+    }
+  
 </style>
