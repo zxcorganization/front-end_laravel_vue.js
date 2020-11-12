@@ -24,43 +24,51 @@
 
 
             </ul>
-            <input v-model="searchGame" type="text" placeholder="Search Game" />
-            <ul>
-                <li v-for="(game , index) in filteredGames" :key="index">
-                    {{game}}
-                </li>
-            </ul>
+            <line-chart  />
         </div>
-       
     </div>
 </template>
 
     <script>
         import axios from 'axios'
-        
+        import { Line  } from 'vue-chartjs'
+
         export default {
          
             data() {
                 return {
-                    searchGame: '',
                     searchHero: '',
-                    games: ['CsGo', 'Defence of the Ancient', 'Dota', 'Lol', 'HS'],
                     list: [],
+                    extends: Line ,
                     show: false,
                     heroData: [],
-                    heroId:[]
-                    
+                    heroId: [],
+                    chartdata: {
+                        labels: ['January', 'February'],
+                        datasets: [
+                            {
+                                label: 'Data One',
+                                backgroundColor: '#f87979',
+                                data: [40, 20]
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
                 }
             },
             mounted() {
                 axios.get('http://dummy.restapiexample.com/api/v1/employees')
                     .then((response) => {
                     this.list = response.data.data;
-
-                        this.show = true;
+                    this.show = true;
+                        this.renderChart(this.chartdata, this.options);
                 })  
                     
             },
+
             
             computed: {
             
@@ -69,11 +77,7 @@
                         return hero.toUpperCase().indexOf(this.searchHero.toUpperCase()) !== -1
                     })
                 },
-                filteredGames() {
-                    return this.games.filter(game => {
-                        return game.toUpperCase().indexOf(this.searchGame.toUpperCase()) !== -1
-                    })
-                }
+                
                 
             }
 

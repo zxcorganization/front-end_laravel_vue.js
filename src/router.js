@@ -1,8 +1,8 @@
 import VueRouter from 'vue-router'
-import about from './pages/dashboard.vue'
-    
-import home from './pages/heroes.vue'
-import herodata from './pages/herodata.vue'
+import about from './components/pages/dashboard.vue'
+import home from './components/pages/heroes.vue'
+import herodata from './components/pages/herodata.vue'
+
 export default new VueRouter({
     routes: [{
         path: '',

@@ -11,9 +11,11 @@
     "axios": "^0.20.0",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.18.0",
+    "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-axios": "^3.1.1",
+    "vue-chartjs": "^3.5.1",
     "vue-router": "^3.4.7"
   },
   "devDependencies": {
@@ -35,7 +37,8 @@
       "eslint:recommended"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "babel-eslint",
+      "ecmaVersion": 6
     },
     "rules": {}
   },

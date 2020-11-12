@@ -2,7 +2,7 @@
     <div>
         <h1>My heroes</h1>
         <div class="addMenu">
-            <input ref="heroName" type="text" v-model="newHero" @keyup.enter="addHero" />
+            <input ref="heroName" type="text" v-model="newHeroName" @keyup.enter="addHero" />
             <input type="button" name="name" value="Add" />
         </div>
         asdas
@@ -15,25 +15,28 @@
 
 </template>
 <script>
-    import axios from 'axios'
-    import heroaxios from './components/heroaxios.vue'
+    import HeroService from '../../services/hero'
+
     export default {
         data() {
             return {
                 list: [],
-                newHero:''
-
+                newHeroName: '',
+                heroService: new HeroService()
             }
         },
-        
-
-
+       
         methods: {
-              add: heroaxios.addHero,
+            addHero() {
+                this.heroService.addHero(this.newHeroName).then(() => {
+                    console.log('22');
+
+                })
+            },
             getHeroes() {
-                axios.get('http://dummy.restapiexample.com/api/v1/employees' ).then((response) => {
-                    this.list = response.data.data;
-                    console.log(response.data.data);
+                this.heroService.getHeroes().then((heroes) => {
+                    console.log(heroes);
+                    this.list = heroes;
                 })
             },
             deleteHero(id) {
