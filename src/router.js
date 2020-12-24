@@ -1,22 +1,23 @@
 import VueRouter from 'vue-router'
-import about from './components/pages/dashboard.vue'
-import home from './components/pages/heroes.vue'
-import herodata from './components/pages/herodata.vue'
+import dashboard from './components/pages/dashboard.vue'
+import persons from './components/pages/persons.vue'
+import persondata from './components/pages/persondata.vue'
+
 
 export default new VueRouter({
     routes: [{
-        path: '',
-        component:home
-    },
+        path: '/',
+        component:persons
+         },
         {
-            path: '/about',
-            component:about
+            path: '/dashboard',
+            component:dashboard
         },
       
         {
-            path: '/herodata/:id',
-            name:'herodata',
-            component:  herodata
+            path: '/persondata/:id',
+            name:'persondata',
+            component:  persondata
         }
      
     ],

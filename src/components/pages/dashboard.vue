@@ -1,60 +1,186 @@
 <template>
+  <div>
+
     <div>
-        <h1>My heroes</h1>
-        <div class="addMenu">
-            <input ref="heroName" type="text" v-model="newHeroName" @keyup.enter="addHero" />
-            <input type="button" name="name" value="Add" />
-        </div>
-        asdas
-        <table>
-            <td>
-            <tr v-for="hero in list" v-bind:key="hero.id">  {{hero.employee_name}}<button v-on:click="deleteHero(hero.id)">delete</button></tr>
-            </td>
-        </table>
+
+      <b-form @submit.stop.prevent="onSubmit">
+        <b-form-group id="name-group" label="name" label-for="name">
+          <b-form-input
+                  id="name"
+                  name="name"
+                  v-model="$v.form.name.$model"
+                  :state="validateState('name')"
+                  aria-describedby="name-live-feedback"
+          ></b-form-input>
+
+          <b-form-invalid-feedback
+                  id="name-live-feedback"
+          >This is a required field and must be at least 3 characters.
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+        <b-form-group id="phone-group" label="phone" label-for="phone">
+          <b-form-input
+                  id="phone"
+                  name="phone"
+                  v-model="$v.form.phone.$model"
+                  :state="validateState('phone')"
+                  aria-describedby="name-live-feedback"
+          ></b-form-input>
+
+          <b-form-invalid-feedback
+                  id="phone-live-feedback"
+          >This is a required field and must be at least 5 characters.
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+
+        <b-form-group id="email-group" label="email" label-for="email">
+          <b-form-input
+                  id="email"
+                  name="email"
+                  v-model="$v.form.email.$model"
+                  :state="validateState('email')"
+                  aria-describedby="email-live-feedback"
+          ></b-form-input>
+
+          <b-form-invalid-feedback
+                  id="email-live-feedback"
+          >This is a required field and must be at least 8 characters.
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+        <b-form-group id="age-group" label="age" label-for="age">
+          <b-form-input
+                  id="age"
+                  name="age"
+                  v-model="$v.form.age.$model"
+                  :state="validateState('age')"
+                  aria-describedby="age-live-feedback"
+          ></b-form-input>
+
+          <b-form-invalid-feedback
+                  id="name-live-feedback"
+          >This is a required field and must be at least 1 characters.
+          </b-form-invalid-feedback>
+        </b-form-group>
+
+
+        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button class="ml-2" @click="resetForm()">Reset</b-button>
+      </b-form>
     </div>
+
+    <table>
+      <td>
+        <tr v-for="person in persons" v-bind:key="person.id"> {{ person.name }}
+          <button v-on:click="deletePerson(person.id)">delete</button>
+        </tr>
+      </td>
+    </table>
+  </div>
 
 </template>
 <script>
-    import HeroService from '../../services/hero'
+import PersonService from '../../services/person'
+import {validationMixin} from "vuelidate";
+import {required, minLength , maxLength , maxValue} from "vuelidate/lib/validators";
 
-    export default {
-        data() {
-            return {
-                list: [],
-                newHeroName: '',
-                heroService: new HeroService()
-            }
-        },
-       
-        methods: {
-            addHero() {
-                this.heroService.addHero(this.newHeroName).then(() => {
-                    console.log('22');
+export default {
+  mixins: [validationMixin],
+  data() {
+    return {
+      persons: [],
+      personService: new PersonService(),
 
-                })
-            },
-            getHeroes() {
-                this.heroService.getHeroes().then((heroes) => {
-                    console.log(heroes);
-                    this.list = heroes;
-                })
-            },
-            deleteHero(id) {
-                this.axios.delete('http://dummy.restapiexample.com/api/v1/delete/'+id).then((response) => {
-                    this.getHeroes();
-                    console.log(response.data.data);
-                })
-            }
-
-        },
-        mounted() {
-            this.getHeroes();   
-        },
+      form: {
+        name: null,
+        phone : null,
+        email : null ,
+        age : null
+      }
     }
+  },
+  validations: {
+    form: {
+      name: {
+        required,
+        minLength: minLength(3),
+        maxLength: maxLength(50)
+      },
+      phone: {
+        required,
+        minLength: minLength(5),
+        maxLength: maxLength(15)
+      },
+      email: {
+        required,
+        minLength: minLength(8),
+        maxLength: maxLength(50)
+      },
+      age: {
+        required,
+        minLength: minLength(1),
+        maxValue : maxValue(100)
+      }
+    }
+  },
+  methods: {
+
+    validateState(name , phone , email , age) {
+      const {$dirty, $error} = this.$v.form[name] || this.$v.form[email] || this.$v.form[phone] || this.$v.form[age];
+
+      return $dirty ? !$error : null;
+    },
+    resetForm() {
+      this.form = {
+        name: null,
+        phone: null,
+        email :null ,
+        age : null
+      };
+
+      this.$nextTick(() => {
+        this.$v.$reset();
+      });
+    },
+    onSubmit() {
+      this.$v.form.$touch();
+      if (this.$v.form.$anyError) {
+        return;
+      }
+
+      alert("Form submitted!");
+      this.addPerson(this.form);
+    },
+
+    addPerson() {
+      this.personService.addPerson(this.form).then((persons) => {
+        console.log(persons);
+        this.getPersons();
+      })
+
+    },
+    getPersons() {
+      this.personService.getPersons().then((persons) => {
+        console.log(persons);
+        this.persons = persons;
+
+      })
+    },
+
+    deletePerson(id) {
+      this.personService.deletePerson(id).then((response) => {
+        console.log(response.data.data);
+        this.getPersons();
+      })
+    }
+
+  },
+  mounted() {
+    this.getPersons();
+  },
+}
 </script>
 <style>
-    .addMenu{
-        display:flex;
-        margin-left:15px;
-    }
 </style>

@@ -3,7 +3,7 @@
     <div id="app">
         <h2>Tour of Heroes</h2>
         <router-link tag="b-button" active-class="active" to="/" exact>Dashboard</router-link>
-        <router-link tag="b-button" active-class="active" to="/about" exact>Heroes</router-link>
+        <router-link tag="b-button" active-class="active" to="/dashboard" exact>Heroes</router-link>
         <router-view />
        
 
