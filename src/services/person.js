@@ -2,18 +2,26 @@ import axios from 'axios';
 
 export default class PersonService {
     addPerson(form) {
-        return axios.post(process.env.VUE_APP_HEROES_URL,
-            {
-                name: form.name ,
-                age: form.age ,
-                phone: form.phone,
-                email: form.email
-            });
+        return new Promise((resolve, reject) => {
+            axios.post(process.env.VUE_APP_HEROES_URL + '/persons',
+                {
+                    name: form.name,
+                    age: form.age,
+                    phone: form.phone,
+                    email: form.email
+                })
+                .then(response => {
+                    resolve(response.data.data);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
     }
 
     getPersons() {
         return new Promise((resolve, reject) => {
-            axios.get(process.env.VUE_APP_HEROES_URL)
+            axios.get(process.env.VUE_APP_HEROES_URL + '/persons')
                 .then(response => {
                     resolve(response.data.data);
                 })
@@ -26,7 +34,7 @@ export default class PersonService {
 
     getPerson(id) {
         return new Promise((resolve, reject) => {
-            axios.get(process.env.VUE_APP_HEROES_URL + '/' + id)
+            axios.get(process.env.VUE_APP_HEROES_URL + '/persons/' + id)
                 .then(response => {
                     resolve(response.data.data);
                 })
@@ -39,7 +47,7 @@ export default class PersonService {
 
     deletePerson(id) {
         return new Promise((resolve, reject) => {
-            axios.delete(process.env.VUE_APP_HEROES_URL + '/' + id)
+            axios.delete(process.env.VUE_APP_HEROES_URL + '/persons/' + id)
                 .then(response => {
                     resolve(response);
                 })
@@ -50,9 +58,15 @@ export default class PersonService {
 
     }
 
-    updatePerson(id, name) {
+    updatePerson(id, updateForm) {
         return new Promise((resolve, reject) => {
-            axios.put(process.env.VUE_APP_HEROES_URL + '/' + id, {name: name})
+            axios.put(process.env.VUE_APP_HEROES_URL + '/persons/' + id,
+                {
+                    name: updateForm.name,
+                    age: updateForm.age,
+                    phone: updateForm.phone,
+                    email: updateForm.email
+                })
                 .then(response => {
                     resolve(response.data.data);
                 })
